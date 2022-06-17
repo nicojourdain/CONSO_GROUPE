@@ -27,9 +27,12 @@ f.close()
 
 #xdates=np.datetime64(dates)
 xdates = [datetime.datetime.strptime(d,"%Y-%m-%d").date() for d in dates]
-print(dates)
-print(xdates)
-print(conso_groupe)
+
+d0=datetime.datetime.strptime('2022-05-01',"%Y-%m-%d").date()
+nb_day_alloc=np.zeros((Nline))
+for kdate in np.arange(Nline):
+  delta=xdates[kdate]-d0
+  nb_day_alloc[kdate] = delta.days
 
 #-------------------------------------------------
 
@@ -39,11 +42,12 @@ fig, ax = plt.subplots()
 formatter = mdates.DateFormatter("%Y-%m-%d")
 ax.xaxis.set_major_formatter(formatter)
 
-locator = mdates.DayLocator()
-ax.xaxis.set_major_locator(locator)
+#locator = mdates.DayLocator()
+#ax.xaxis.set_major_locator(locator)
 
-plt.plot(xdates,alloc_groupe)
-plt.plot(xdates,conso_groupe)
+plt.plot(xdates,alloc_groupe,color='k',linewidth=2.0)
+plt.plot(xdates,alloc_groupe*nb_day_alloc/365.,'--',color='grey',linewidth=1.2)
+plt.plot(xdates,conso_groupe,color='grey',linewidth=1.8)
 
 
 #-------------------------------------------------
